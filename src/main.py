@@ -1,5 +1,5 @@
 from typing import List, Optional
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, status, Response
 
 from models import Product
 
@@ -43,6 +43,15 @@ async def put_product(product_id: int, product: Product):
         return product
     else:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail=f'Product ID= {product_id} non exists.')
+    
+@app.delete('/product/{product_id}')
+async def delete_product(product_id: int):
+    if product_id in products:
+        del products[product_id]
+        # return Response.JSONResponse(content=None, status_code=status.HTTP_204_NO_CONTENT) other way to do
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
+    else:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail='Product ID not found.')
 
 if __name__ == '__main__':
     import uvicorn

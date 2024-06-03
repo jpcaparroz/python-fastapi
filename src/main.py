@@ -1,5 +1,5 @@
 from typing import List, Optional
-from fastapi import FastAPI, HTTPException, status, Response
+from fastapi import FastAPI, HTTPException, status, Response, Path
 
 from models import Product
 
@@ -23,7 +23,7 @@ async def get_products():
     return products
 
 @app.get('/product/{product_id}')
-async def get_product(product_id: int):
+async def get_product(product_id: int = Path(title='Product ID', gt=0, le=len(products))):
     try:
         product = products[product_id]
         return product

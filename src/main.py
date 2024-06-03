@@ -1,5 +1,6 @@
 from typing import List, Optional
-from fastapi import FastAPI, HTTPException, status, Response, Path, Query
+from fastapi import FastAPI, HTTPException, status, Response, Path, Query, \
+                    Header
 
 from models import Product
 
@@ -60,8 +61,9 @@ async def calculate(a: int, b: int, c: int):
     return {'result': result}
 
 @app.get('/calculator2')
-async def calculate2(a: int, b: int, c: int = Query(gt=1)):
+async def calculate2(a: int, b: int, c: int = Query(gt=1), xhead: str = Header(default=None)):
     result = a + b + c
+    print(f'header: {xhead}')
     
     return {'result': result}
     

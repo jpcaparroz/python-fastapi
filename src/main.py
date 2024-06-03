@@ -1,6 +1,6 @@
-from typing import List, Optional
+from typing import List, Optional, Any
 from fastapi import FastAPI, HTTPException, status, Response, Path, Query, \
-                    Header
+                    Header, Depends
 
 from models import Product
 
@@ -19,8 +19,14 @@ products = {
     }
 }
 
+def fake_auth():
+    try:
+        print('Authenticate the user...')
+    finally:
+        print('REST use sucessfully =)')     
+
 @app.get('/products')
-async def get_products():
+async def get_products(dependency: Any = Depends(fake_auth)):
     return products
 
 @app.get('/product/{product_id}')

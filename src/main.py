@@ -1,5 +1,5 @@
 from typing import List, Optional
-from fastapi import FastAPI, HTTPException, status, Response, Path
+from fastapi import FastAPI, HTTPException, status, Response, Path, Query
 
 from models import Product
 
@@ -52,6 +52,19 @@ async def delete_product(product_id: int):
         return Response(status_code=status.HTTP_204_NO_CONTENT)
     else:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail='Product ID not found.')
+    
+@app.get('/calculator')
+async def calculate(a: int, b: int, c: int):
+    result = a + b + c
+    
+    return {'result': result}
+
+@app.get('/calculator2')
+async def calculate2(a: int, b: int, c: int = Query(gt=1)):
+    result = a + b + c
+    
+    return {'result': result}
+    
 
 if __name__ == '__main__':
     import uvicorn

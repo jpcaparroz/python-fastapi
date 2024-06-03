@@ -4,7 +4,12 @@ from fastapi import FastAPI, HTTPException, status, Response, Path, Query, \
 
 from models import Product
 
-app = FastAPI()
+app = FastAPI(
+    title='python-fastapi',
+    version='0.0.1',
+    description='API to learn fastapi lib',
+    
+)
 
 products = {
     1: {

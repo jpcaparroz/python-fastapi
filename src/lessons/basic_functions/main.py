@@ -48,13 +48,14 @@ async def get_product(product_id: int = Path(title='Product ID', gt=0, le=len(pr
 @app.post('/product', status_code=status.HTTP_201_CREATED)
 async def post_product(product: Product):
     next_id: int = len(products) + 1
-    products[next_id] = product
+    product.id = next_id
+    products.append(product)
     return product
 
 @app.put('/product/{product_id}')
 async def put_product(product_id: int, product: Product):
     if product_id in products:
-        products[product_id] = product
+        products[product_id] = products
         return product
     else:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail=f'Product ID= {product_id} non exists.')

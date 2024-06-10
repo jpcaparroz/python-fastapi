@@ -1,8 +1,20 @@
-from typing import List, Optional, Any
-from fastapi import FastAPI, HTTPException, status, Response, Path, Query, \
-                    Header, Depends
+from typing import List
+from typing import Dict
+from typing import Any
+from typing import Optional
 
-from models import Product
+from fastapi import FastAPI
+from fastapi import HTTPException
+from fastapi import Response
+from fastapi import status
+from fastapi import Path
+from fastapi import Query
+from fastapi import Header
+from fastapi import Depends
+
+from models.Product import Product
+from models.Product import products
+
 
 app = FastAPI(
     title='python-fastapi',
@@ -11,18 +23,6 @@ app = FastAPI(
     
 )
 
-products = {
-    1: {
-        "id": 1,
-        "name": "Test Product1",
-        "value": 19.43
-    },
-    2: {
-        "id": 2,
-        "name": "Test Product2",
-        "value": 11.42
-    }
-}
 
 def fake_auth():
     try:
@@ -30,7 +30,10 @@ def fake_auth():
     finally:
         print('REST use sucessfully =)')     
 
-@app.get('/products')
+@app.get('/products', description='Return a list of products',
+                      summary='List of products',
+                      response_model=List[Product],
+                      response_description='Nice response!')
 async def get_products(dependency: Any = Depends(fake_auth)):
     return products
 

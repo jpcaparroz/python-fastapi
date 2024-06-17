@@ -55,3 +55,11 @@ def _create_token(token_type: str, lifetime: timedelta, subject: str) -> str:
     
     return jwt.encode(payload, settings.JWT_SECRET, algorithm=settings.ALGORITHM)
 
+
+def create_access_token(subject: str) -> str:
+    # Infos: https://jwt.io
+    return _create_token(
+        token_type='access_token',
+        lifetime=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
+        subject=subject
+    )

@@ -7,14 +7,15 @@ from sqlalchemy import update
 from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from models.__all_models import ArticleModel
+from models.article_model import ArticleModel
 from schemas import article_schema as schemas
 
 
 # Article
 async def create_article_query(article: ArticleModel, db: AsyncSession):
-    db.add(article)
-    await db.commit()
+    async with db as session:
+        session.add(article)
+        await session.commit()
     
     return article
 

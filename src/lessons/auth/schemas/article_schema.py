@@ -14,4 +14,4 @@ class ArticleSchema(BaseModel):
     user: Optional[UUID]
     
     class Config:
-        orm_mode = True
+        from_attributes = True

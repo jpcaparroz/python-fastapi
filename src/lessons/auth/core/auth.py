@@ -29,14 +29,14 @@ oauth2_schema = OAuth2PasswordBearer(
 
 async def authenticate(email: EmailStr, password: str, db: AsyncSession) -> Optional[UserModel]:
     async with db as session:
-        query = select(UserModel).filter(UserModel.email == email)
+        query = select(UserModel).filter(UserModel.user_email == email)
         result = await session.execute(query)
         user: UserModel = result.scalars().unique().one_or_none()
         
         if not user:
             return None
         
-        if not verify_password(password, user.password):
+        if not verify_password(password, user.user_password):
             return None
 
     return user

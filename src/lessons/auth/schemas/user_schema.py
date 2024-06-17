@@ -11,28 +11,31 @@ from pydantic import EmailStr
 from schemas.article_schema import ArticleSchema
 
 
-class UserBaseSchema(BaseModel):
-    user_uuid: Optional[UUID] = None
+class BaseUserSchema(BaseModel):
     user_name: str
     user_email: EmailStr
     is_admin: bool = False
-    created_on: datetime
-    updated_on: datetime
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
-class UserCreateSchema(UserBaseSchema):
+class CreateUserSchema(BaseUserSchema):
     user_password: str
 
 
-class UserArticlesSchema(UserBaseSchema):
+class UserArticlesSchema(BaseUserSchema):
     articles: Optional[List[ArticleSchema]]
 
 
-class UserUpdateSchema(UserBaseSchema):
+class UpdateUserSchema(BaseUserSchema):
     user_name: Optional[str]
     user_password: Optional[str]
     user_email: Optional[EmailStr]
     is_admin: Optional[bool]
+
+
+class GetUserSchema(BaseUserSchema):
+    user_uuid: Optional[UUID] = None
+    created_on: Optional[datetime] = None
+    updated_on: Optional[datetime] = None

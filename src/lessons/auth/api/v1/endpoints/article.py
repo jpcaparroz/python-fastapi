@@ -26,12 +26,7 @@ router = APIRouter()
 async def post_article(article: schemas.ArticleSchema = template.CreateArticleBody,
                        logged_user: UserModel = Depends(get_current_user),
                        db: AsyncSession = Depends(get_session)):
-    new_article: ArticleModel = ArticleModel(
-        title=article.title,
-        description=article.description,
-        source_url=article.source_url,
-        user=logged_user.user_uuid
-    )
+    new_article: ArticleModel = ArticleModel(**article.model_dump())
 
     return await crud.create_article_query(article=new_article, db=db)
 
@@ -46,7 +41,7 @@ async def get_article(article_uuid: UUID, db: AsyncSession = Depends(get_session
     response = await crud.get_article_query(article_uuid=article_uuid, db=db)
     if not response:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Article not found')
-    
+
     return response
 
 
@@ -57,19 +52,15 @@ async def update_article(article_uuid: UUID,
     response = await crud.update_article_query(article_uuid=article_uuid, article_updated=article_updated, db=db)
     if not response:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Article not found')
-    
+
     return response 
 
 
 @router.delete("/{article_uuid}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_article(article_uuid: UUID, db: AsyncSession = Depends(get_session)):
-    return await crud.delete_article_query(article_uuid=article_uuid, db=db)
+    response = await crud.delete_article_query(article_uuid=article_uuid, db=db)
+    if not response:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Article not found')
 
-
-# async def search_product(product_id: int, db: AsyncSession = Depends(get_session)):
-#     response = await crud.search_product_query(product_id=product_id, db=db)
-#     if not response:
-#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Product not found')
-    
-#     return response
+    return response 
 

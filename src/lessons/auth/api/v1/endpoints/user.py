@@ -1,8 +1,6 @@
 from uuid import UUID
 
 from typing import List
-from typing import Any
-from typing import Optional
 
 from fastapi import APIRouter
 from fastapi import HTTPException
@@ -19,9 +17,7 @@ from core.deps import get_current_user
 from core.auth import authenticate
 from core.auth import create_access_token
 from core.security import generate_hash
-from models.article_model import ArticleModel
 from models.user_model import UserModel
-from schemas import article_schema
 from schemas import user_schema as schemas
 from api.v1.data import user_crud as crud
 from api.v1.data import user_template as template

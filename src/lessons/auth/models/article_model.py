@@ -1,6 +1,7 @@
 from uuid import UUID
 from uuid import uuid4
 
+from sqlalchemy_utils import URLType
 from sqlalchemy import Column
 from sqlalchemy import String
 from sqlalchemy import UUID
@@ -16,6 +17,6 @@ class ArticleModel(settings.DBBaseModel):
     article_uuid = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
     title = Column(String(256))
     description = Column(String(256))
-    source_url = Column(String(256))
+    source_url = Column(URLType)
     user = Column(UUID(as_uuid=True), ForeignKey('user.user_uuid'))
     creator = relationship("UserModel", back_populates='article', lazy='joined')

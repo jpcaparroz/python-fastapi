@@ -24,7 +24,7 @@ async def get_articles_query(db: AsyncSession):
     async with db as session:
         query = select(ArticleModel)
         result = await session.execute(query)
-        articles: List[ArticleModel] = result.scalars().all()
+        articles: List[ArticleModel] = result.scalars().unique().all()
         
         return articles
 
